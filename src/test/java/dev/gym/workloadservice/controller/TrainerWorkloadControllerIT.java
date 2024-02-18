@@ -1,9 +1,10 @@
 package dev.gym.workloadservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.gym.workloadservice.controller.util.RestApiConst;
 import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
-import dev.gym.workloadservice.jwt.JwtUtil;
 import dev.gym.workloadservice.model.ActionType;
+import dev.gym.workloadservice.security.jwt.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,8 @@ class TrainerWorkloadControllerIT {
 
     @Test
     void givenRequest_whenNoAuthorizationHeader_thenUnauthorized() throws Exception {
-        mockMvc.perform(get("/workload-service/trainers/workload/monthly"))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get(RestApiConst.TRAINER_WORKLOAD_MONTHLY_REPORT_API_ROOT_PATH + "/testUsername"))
+                .andExpect(status().is(403));
     }
 
     @Test
@@ -41,7 +42,7 @@ class TrainerWorkloadControllerIT {
         jwtUtil.setSecret(secret);
         String token = jwtUtil.generateToken("testUser");
 
-        mockMvc.perform(get("/workload-service/trainers/workload/monthly")
+        mockMvc.perform(get(RestApiConst.TRAINER_WORKLOAD_MONTHLY_REPORT_API_ROOT_PATH + "/testUsername")
                 .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
@@ -54,7 +55,7 @@ class TrainerWorkloadControllerIT {
 
         TrainerWorkloadRequest trainerWorkloadRequest = new TrainerWorkloadRequest("testUser", "testFirstname", "testLastName", true, LocalDate.now().plusDays(3), 1, ActionType.ADD);
 
-        mockMvc.perform(post("/workload-service/trainers/workload")
+        mockMvc.perform(post(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(trainerWorkloadRequest)))

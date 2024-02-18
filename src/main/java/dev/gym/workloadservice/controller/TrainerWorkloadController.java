@@ -1,13 +1,14 @@
 package dev.gym.workloadservice.controller;
 
 import dev.gym.workloadservice.controller.util.RestApiConst;
-import dev.gym.workloadservice.dto.MonthlySummaryResponse;
+import dev.gym.workloadservice.dto.MonthlyReportProjection;
 import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
 import dev.gym.workloadservice.service.TrainerWorkloadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,9 @@ public class TrainerWorkloadController {
 
     private final TrainerWorkloadService trainerWorkloadService;
 
-    @GetMapping("/monthly")
-    public List<MonthlySummaryResponse> calculateMonthlySummary() {
-        return trainerWorkloadService.calculateMonthlySummary();
+    @GetMapping("/monthly/{username}")
+    public List<MonthlyReportProjection> calculateMonthlyReport(@PathVariable(value = "username") String username) {
+        return trainerWorkloadService.getMonthlyReportByUsername(username);
     }
 
     @PostMapping
