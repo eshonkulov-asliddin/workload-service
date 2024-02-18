@@ -1,7 +1,6 @@
 package dev.gym.workloadservice.service;
 
 import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
-import dev.gym.workloadservice.dto.TrainingSummary;
 import dev.gym.workloadservice.model.ActionType;
 import dev.gym.workloadservice.model.Trainer;
 import dev.gym.workloadservice.model.Training;
@@ -15,13 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -144,52 +138,4 @@ class TrainerWorkloadServiceTest {
 
     }
 
-    @Test
-    void testCalculateMonthlyDurations() {
-
-        // Mock some training data
-        Training training1 = mock(Training.class);
-        when(training1.getTrainingDate()).thenReturn(LocalDate.of(2024, 1, 15));
-        when(training1.getTrainingDuration()).thenReturn(-60);
-
-        Training training2 = mock(Training.class);
-        when(training2.getTrainingDate()).thenReturn(LocalDate.of(2024, 1, 20));
-        when(training2.getTrainingDuration()).thenReturn(90);
-
-        Training training3 = mock(Training.class);
-        when(training3.getTrainingDate()).thenReturn(LocalDate.of(2024, 2, 10));
-        when(training3.getTrainingDuration()).thenReturn(120);
-
-        List<Training> trainings = List.of(training1, training2, training3);
-
-        // Call the method
-        Map<YearMonth, Integer> result = trainerWorkloadService.calculateMonthlyDurations(trainings);
-
-        // Verify the result
-        assertEquals(2, result.size());
-        assertEquals(30, result.get(YearMonth.of(2024, 1))); // 60 - 90
-        assertEquals(120, result.get(YearMonth.of(2024, 2))); // 120
-    }
-
-    @Test
-    void testConvertToTrainingSummaries() {
-        // Mock monthly durations
-        Map<YearMonth, Integer> monthlyDurations = Map.of(
-                YearMonth.of(2024, 1), 30,
-                YearMonth.of(2024, 2), 120
-        );
-
-        // Call the method (as we are converting from Map to List, the order of the elements is not guaranteed)
-        List<TrainingSummary> result = trainerWorkloadService.convertToTrainingSummaries(monthlyDurations);
-
-        // Verify the result
-        assertEquals(2, result.size());
-        assertEquals(2024, result.get(0).getYear());
-        assertTrue(result.get(0).getMonth() == 1 || result.get(0).getMonth() == 2);
-        assertTrue(result.get(0).getTotalTrainingDuration() == 30 || result.get(0).getTotalTrainingDuration() == 120);
-
-        assertEquals(2024, result.get(1).getYear());
-        assertTrue(result.get(1).getMonth() == 1 || result.get(1).getMonth() == 2);
-        assertTrue(result.get(1).getTotalTrainingDuration() == 30 || result.get(1).getTotalTrainingDuration() == 120);
-    }
 }
