@@ -1,4 +1,4 @@
-package dev.gym.workloadservice.jwt;
+package dev.gym.workloadservice.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
