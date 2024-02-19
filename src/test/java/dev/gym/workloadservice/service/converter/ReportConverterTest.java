@@ -31,13 +31,13 @@ class ReportConverterTest {
     @BeforeEach
     void setUp() {
         TrainerReportProjection report = mock(TrainerReportProjection.class);
-        when(report.getUsername()).thenReturn(username);
-        when(report.getFirstName()).thenReturn(firstName);
-        when(report.getLastName()).thenReturn(lastName);
-        when(report.getIsActive()).thenReturn(isActive);
-        when(report.getYear()).thenReturn(year);
-        when(report.getMonth()).thenReturn(month);
-        when(report.getTotalTrainingDuration()).thenReturn(totalTrainingDuration);
+        when(report.username()).thenReturn(username);
+        when(report.firstName()).thenReturn(firstName);
+        when(report.lastName()).thenReturn(lastName);
+        when(report.isActive()).thenReturn(isActive);
+        when(report.year()).thenReturn(year);
+        when(report.month()).thenReturn(month);
+        when(report.totalTrainingDuration()).thenReturn(totalTrainingDuration);
         reports = new ArrayList<>();
         reports.add(report);
     }

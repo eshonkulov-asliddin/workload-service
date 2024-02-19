@@ -15,16 +15,16 @@ public class ReportConverter {
     public static Optional<TrainerReportDTO> convert(List<TrainerReportProjection> reports) {
         return reports.stream().findFirst()
                 .map(report -> new TrainerReportDTO(
-                        report.getUsername(),
-                        report.getFirstName(),
-                        report.getLastName(),
-                        report.getIsActive(),
+                        report.username(),
+                        report.firstName(),
+                        report.lastName(),
+                        report.isActive(),
                         convertToYears(reports)));
     }
 
     protected static List<YearlyReportDTO> convertToYears(List<TrainerReportProjection> reports) {
         return reports.stream()
-                .collect(Collectors.groupingBy(TrainerReportProjection::getYear))
+                .collect(Collectors.groupingBy(TrainerReportProjection::year))
                 .entrySet().stream()
                 .map(entry -> new YearlyReportDTO(entry.getKey(), convertToMonths(entry.getValue())))
                 .toList();
@@ -33,7 +33,7 @@ public class ReportConverter {
 
     protected static List<MonthlyReportDTO> convertToMonths(List<TrainerReportProjection> reports) {
         return reports.stream()
-                .map(report -> new MonthlyReportDTO(report.getMonth(), report.getTotalTrainingDuration()))
+                .map(report -> new MonthlyReportDTO(report.month(), report.totalTrainingDuration()))
                 .sorted(Comparator.comparing(MonthlyReportDTO::month))
                 .toList();
     }
