@@ -11,25 +11,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
 @RequiredArgsConstructor
 public class TrainerWorkloadController {
 
     private final TrainerWorkloadService trainerWorkloadService;
 
-    @GetMapping("/{username}/monthly-reports")
+    @GetMapping(RestApiConst.TRAINER_WORKLOAD_MONTHLY_REPORT_API_ROOT_PATH + "/{username}")
     public Optional<TrainerReportDTO> calculateMonthlyReport(@PathVariable(value = "username") String username) {
         return trainerWorkloadService.getMonthlyReportByUsername(username);
     }
 
-    @PostMapping("/training-changes")
+    @PostMapping(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
     @ResponseStatus(HttpStatus.CREATED)
     public void processTrainingChange(@RequestBody @Validated TrainerWorkloadRequest trainerWorkloadRequest) {
         trainerWorkloadService.processTrainingChange(trainerWorkloadRequest);
