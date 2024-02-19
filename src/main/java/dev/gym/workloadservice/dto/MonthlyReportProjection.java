@@ -2,8 +2,8 @@ package dev.gym.workloadservice.dto;
 
 public interface MonthlyReportProjection {
     String getUsername();
-    String getFirstname();
-    String getLastname();
+    String getFirstName();
+    String getLastName();
     boolean getIsActive();
     int getYear();
     int getMonth();
