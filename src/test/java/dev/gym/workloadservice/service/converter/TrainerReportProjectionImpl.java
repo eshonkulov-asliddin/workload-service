@@ -1,8 +1,8 @@
 package dev.gym.workloadservice.service.converter;
 
-import dev.gym.workloadservice.dto.MonthlyReportProjection;
+import dev.gym.workloadservice.dto.TrainerReportProjection;
 
-public class MonthlyReportProjectionImpl implements MonthlyReportProjection {
+public class TrainerReportProjectionImpl implements TrainerReportProjection {
 
     private String username;
     private String firstName;
@@ -13,7 +13,7 @@ public class MonthlyReportProjectionImpl implements MonthlyReportProjection {
     private int totalTrainingDuration;
 
 
-    public MonthlyReportProjectionImpl(String username, String firstName, String lastName, boolean isActive, int year, int month, int totalTrainingDuration) {
+    public TrainerReportProjectionImpl(String username, String firstName, String lastName, boolean isActive, int year, int month, int totalTrainingDuration) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

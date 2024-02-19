@@ -1,6 +1,6 @@
 package dev.gym.workloadservice.dto;
 
-public interface MonthlyReportProjection {
+public interface TrainerReportProjection {
     String getUsername();
     String getFirstName();
     String getLastName();
