@@ -1,11 +1,10 @@
 package dev.gym.workloadservice.dto;
 
-public interface TrainerReportProjection {
-    String getUsername();
-    String getFirstName();
-    String getLastName();
-    boolean getIsActive();
-    int getYear();
-    int getMonth();
-    int getTotalTrainingDuration();
-}
+public record TrainerReportProjection (
+        String username,
+        String firstName,
+        String lastName,
+        boolean isActive,
+        int year,
+        int month,
+        int totalTrainingDuration ) { }
