@@ -1,6 +1,7 @@
 package dev.gym.workloadservice.controller;
 
 import dev.gym.workloadservice.controller.util.RestApiConst;
+import dev.gym.workloadservice.dto.TrainerReportDTO;
 import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
 import dev.gym.workloadservice.service.TrainerWorkloadService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
@@ -24,7 +25,7 @@ public class TrainerWorkloadController {
     private final TrainerWorkloadService trainerWorkloadService;
 
     @GetMapping("/{username}/monthly-reports")
-    public Map<String, Object> calculateMonthlyReport(@PathVariable(value = "username") String username) {
+    public Optional<TrainerReportDTO> calculateMonthlyReport(@PathVariable(value = "username") String username) {
         return trainerWorkloadService.getMonthlyReportByUsername(username);
     }
 
