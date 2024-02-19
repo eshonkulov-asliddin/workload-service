@@ -39,7 +39,7 @@ class TrainerWorkloadControllerIT {
     }
 
     @Test
-    void givenRequest_whenValidAuthorizationHeader_thenOk() throws Exception {
+    void givenRequest_whenValidAuthorizationHeaderWithInvalidUsername_thenNotFound() throws Exception {
         JwtUtil jwtUtil = new JwtUtil();
         jwtUtil.setSecret(secret);
         jwtUtil.setExpirationTime(expirationTime);
@@ -47,7 +47,7 @@ class TrainerWorkloadControllerIT {
 
         mockMvc.perform(get(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH + "/testUsername/monthly-reports")
                 .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
     @Test
