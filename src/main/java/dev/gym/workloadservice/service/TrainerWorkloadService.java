@@ -33,6 +33,9 @@ public class TrainerWorkloadService {
             trainer.setActive(trainerWorkloadRequest.isActive());
         }
 
+        ActionType actionType = trainerWorkloadRequest.actionType();
+        int trainingDuration = trainerWorkloadRequest.trainingDuration();
+
         Training training = new Training();
         training.setTrainingDate(trainerWorkloadRequest.trainingDate());
         training.setTrainingDuration(actionType == ActionType.ADD ? trainingDuration : -trainingDuration);
