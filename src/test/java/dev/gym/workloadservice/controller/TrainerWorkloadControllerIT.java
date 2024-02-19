@@ -25,6 +25,8 @@ class TrainerWorkloadControllerIT {
 
     @Value("${jwt.secret.key}")
     private String secret;
+    @Value("${jwt.expiration.time}")
+    private long expirationTime;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -40,6 +42,7 @@ class TrainerWorkloadControllerIT {
     void givenRequest_whenValidAuthorizationHeader_thenOk() throws Exception {
         JwtUtil jwtUtil = new JwtUtil();
         jwtUtil.setSecret(secret);
+        jwtUtil.setExpirationTime(expirationTime);
         String token = jwtUtil.generateToken("testUser");
 
         mockMvc.perform(get(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH + "/testUsername/monthly-reports")
@@ -51,6 +54,7 @@ class TrainerWorkloadControllerIT {
     void givenValidRequest_whenCreateWorkload_thenCreated() throws Exception {
         JwtUtil jwtUtil = new JwtUtil();
         jwtUtil.setSecret(secret);
+        jwtUtil.setExpirationTime(expirationTime);
         String token = jwtUtil.generateToken("testUser");
 
         TrainerWorkloadRequest trainerWorkloadRequest = new TrainerWorkloadRequest("testUser", "testFirstname", "testLastName", true, LocalDate.now().plusDays(3), 1, ActionType.ADD);
