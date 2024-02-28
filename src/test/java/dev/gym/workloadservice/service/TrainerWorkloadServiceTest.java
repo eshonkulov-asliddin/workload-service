@@ -1,6 +1,6 @@
 package dev.gym.workloadservice.service;
 
-import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
+import dev.gym.workloadservice.dto.TrainerWorkload;
 import dev.gym.workloadservice.model.ActionType;
 import dev.gym.workloadservice.model.Trainer;
 import dev.gym.workloadservice.model.Training;
@@ -39,23 +39,23 @@ class TrainerWorkloadServiceTest {
 
         //******************* GIVEN *******************//
         //mocking the TrainerWorkloadRequest
-        TrainerWorkloadRequest trainerWorkloadRequest = mock(TrainerWorkloadRequest.class);
-        when(trainerWorkloadRequest.trainerUsername()).thenReturn("trainerUsername");
-        when(trainerWorkloadRequest.trainerFirstname()).thenReturn("trainerFirstname");
-        when(trainerWorkloadRequest.trainerLastname()).thenReturn("trainerLastname");
-        when(trainerWorkloadRequest.isActive()).thenReturn(true);
-        when(trainerWorkloadRequest.trainingDate()).thenReturn(LocalDate.now().plusDays(2));
-        when(trainerWorkloadRequest.trainingDuration()).thenReturn(60);
-        when(trainerWorkloadRequest.actionType()).thenReturn(ActionType.ADD);
+        TrainerWorkload trainerWorkload = mock(TrainerWorkload.class);
+        when(trainerWorkload.trainerUsername()).thenReturn("trainerUsername");
+        when(trainerWorkload.trainerFirstname()).thenReturn("trainerFirstname");
+        when(trainerWorkload.trainerLastname()).thenReturn("trainerLastname");
+        when(trainerWorkload.isActive()).thenReturn(true);
+        when(trainerWorkload.trainingDate()).thenReturn(LocalDate.now().plusDays(2));
+        when(trainerWorkload.trainingDuration()).thenReturn(60);
+        when(trainerWorkload.actionType()).thenReturn(ActionType.ADD);
 
         // mock Trainer
         Trainer trainer = mock(Trainer.class);
 
         // mock Training
         Training training = mock(Training.class);
-        training.setTrainingDate(trainerWorkloadRequest.trainingDate());
-        training.setTrainingDuration(trainerWorkloadRequest.trainingDuration());
-        training.setActionType(trainerWorkloadRequest.actionType());
+        training.setTrainingDate(trainerWorkload.trainingDate());
+        training.setTrainingDuration(trainerWorkload.trainingDuration());
+        training.setActionType(trainerWorkload.actionType());
         training.setTrainer(trainer);
 
         // mock the repository
@@ -63,19 +63,19 @@ class TrainerWorkloadServiceTest {
         when(trainingRepository.save(ArgumentMatchers.any(Training.class))).thenReturn(training);
 
         //****************** WHEN *******************//
-        trainerWorkloadService.processTrainingChange(trainerWorkloadRequest);
+        trainerWorkloadService.processTrainingChange(trainerWorkload);
 
         //****************** THEN *******************//
         // verify new trainer is created
-        verify(trainer, times(1)).setUsername(trainerWorkloadRequest.trainerUsername());
-        verify(trainer, times(1)).setFirstName(trainerWorkloadRequest.trainerFirstname());
-        verify(trainer, times(1)).setLastName(trainerWorkloadRequest.trainerLastname());
-        verify(trainer, times(1)).setActive(trainerWorkloadRequest.isActive());
+        verify(trainer, times(1)).setUsername(trainerWorkload.trainerUsername());
+        verify(trainer, times(1)).setFirstName(trainerWorkload.trainerFirstname());
+        verify(trainer, times(1)).setLastName(trainerWorkload.trainerLastname());
+        verify(trainer, times(1)).setActive(trainerWorkload.isActive());
 
         // verify training is created
-        verify(training, times(1)).setTrainingDate(trainerWorkloadRequest.trainingDate());
-        verify(training, times(1)).setTrainingDuration(trainerWorkloadRequest.trainingDuration());
-        verify(training, times(1)).setActionType(trainerWorkloadRequest.actionType());
+        verify(training, times(1)).setTrainingDate(trainerWorkload.trainingDate());
+        verify(training, times(1)).setTrainingDuration(trainerWorkload.trainingDuration());
+        verify(training, times(1)).setActionType(trainerWorkload.actionType());
         verify(training, times(1)).setTrainer(trainer);
 
         // verify the repository is called
@@ -88,48 +88,48 @@ class TrainerWorkloadServiceTest {
     void givenValidTrainerWorkloadRequest_whenTrainerExists_thenRetrieveTrainer() {
         //************************ GIVEN ************************//
         //mocking the TrainerWorkloadRequest
-        TrainerWorkloadRequest trainerWorkloadRequest = mock(TrainerWorkloadRequest.class);
-        when(trainerWorkloadRequest.trainerUsername()).thenReturn("trainerUsername");
-        when(trainerWorkloadRequest.trainerFirstname()).thenReturn("trainerFirstname");
-        when(trainerWorkloadRequest.trainerLastname()).thenReturn("trainerLastname");
-        when(trainerWorkloadRequest.isActive()).thenReturn(true);
-        when(trainerWorkloadRequest.trainingDate()).thenReturn(LocalDate.now().plusDays(2));
-        when(trainerWorkloadRequest.trainingDuration()).thenReturn(60);
-        when(trainerWorkloadRequest.actionType()).thenReturn(ActionType.ADD);
+        TrainerWorkload trainerWorkload = mock(TrainerWorkload.class);
+        when(trainerWorkload.trainerUsername()).thenReturn("trainerUsername");
+        when(trainerWorkload.trainerFirstname()).thenReturn("trainerFirstname");
+        when(trainerWorkload.trainerLastname()).thenReturn("trainerLastname");
+        when(trainerWorkload.isActive()).thenReturn(true);
+        when(trainerWorkload.trainingDate()).thenReturn(LocalDate.now().plusDays(2));
+        when(trainerWorkload.trainingDuration()).thenReturn(60);
+        when(trainerWorkload.actionType()).thenReturn(ActionType.ADD);
 
         // Trainer object
         Trainer trainer = new Trainer();
-        trainer.setUsername(trainerWorkloadRequest.trainerUsername());
-        trainer.setFirstName(trainerWorkloadRequest.trainerFirstname());
-        trainer.setLastName(trainerWorkloadRequest.trainerLastname());
-        trainer.setActive(trainerWorkloadRequest.isActive());
+        trainer.setUsername(trainerWorkload.trainerUsername());
+        trainer.setFirstName(trainerWorkload.trainerFirstname());
+        trainer.setLastName(trainerWorkload.trainerLastname());
+        trainer.setActive(trainerWorkload.isActive());
 
         Trainer mockTrainer = spy(trainer);
 
         // mock Training
         Training training = mock(Training.class);
-        training.setTrainingDate(trainerWorkloadRequest.trainingDate());
-        training.setTrainingDuration(trainerWorkloadRequest.trainingDuration());
-        training.setActionType(trainerWorkloadRequest.actionType());
+        training.setTrainingDate(trainerWorkload.trainingDate());
+        training.setTrainingDuration(trainerWorkload.trainingDuration());
+        training.setActionType(trainerWorkload.actionType());
         training.setTrainer(trainer);
 
         when(trainerRepository.findByUsername(anyString())).thenReturn(Optional.of(mockTrainer)); // simulate existing trainer
         when(trainingRepository.save(ArgumentMatchers.any(Training.class))).thenReturn(training);
 
         //************************ WHEN ************************//
-        trainerWorkloadService.processTrainingChange(trainerWorkloadRequest);
+        trainerWorkloadService.processTrainingChange(trainerWorkload);
 
         //*********************** THEN ************************//
         // verify existing trainer is used
-        verify(mockTrainer, times(0)).setUsername(trainerWorkloadRequest.trainerUsername());
-        verify(mockTrainer, times(0)).setFirstName(trainerWorkloadRequest.trainerFirstname());
-        verify(mockTrainer, times(0)).setLastName(trainerWorkloadRequest.trainerLastname());
-        verify(mockTrainer, times(0)).setActive(trainerWorkloadRequest.isActive());
+        verify(mockTrainer, times(0)).setUsername(trainerWorkload.trainerUsername());
+        verify(mockTrainer, times(0)).setFirstName(trainerWorkload.trainerFirstname());
+        verify(mockTrainer, times(0)).setLastName(trainerWorkload.trainerLastname());
+        verify(mockTrainer, times(0)).setActive(trainerWorkload.isActive());
 
         // verify new training is created
-        verify(training, times(1)).setTrainingDate(trainerWorkloadRequest.trainingDate());
-        verify(training, times(1)).setTrainingDuration(trainerWorkloadRequest.trainingDuration());
-        verify(training, times(1)).setActionType(trainerWorkloadRequest.actionType());
+        verify(training, times(1)).setTrainingDate(trainerWorkload.trainingDate());
+        verify(training, times(1)).setTrainingDuration(trainerWorkload.trainingDuration());
+        verify(training, times(1)).setActionType(trainerWorkload.actionType());
         verify(training, times(1)).setTrainer(trainer);
 
         // verify the repository is called
