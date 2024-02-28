@@ -31,6 +31,6 @@ public class Training {
     @Enumerated(EnumType.STRING)
     private ActionType actionType;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Trainer trainer;
 }
