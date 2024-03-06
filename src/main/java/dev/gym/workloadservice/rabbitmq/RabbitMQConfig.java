@@ -74,15 +74,14 @@ public class RabbitMQConfig {
 
     public static class MyFatalExceptionStrategy extends ConditionalRejectingErrorHandler.DefaultExceptionStrategy {
 
-        private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+        private static final Logger LOGGER = LoggerFactory.getLogger(MyFatalExceptionStrategy.class);
 
         @Override
         public boolean isFatal(Throwable t) {
-            if (t instanceof ListenerExecutionFailedException) {
-                ListenerExecutionFailedException lefe = (ListenerExecutionFailedException) t;
-                LOGGER.error("Failed to process inbound message from queue "
-                        + lefe.getFailedMessage().getMessageProperties().getConsumerQueue()
-                        + "; failed message: " + lefe.getFailedMessage(), t);
+            if (t instanceof ListenerExecutionFailedException lefe) {
+                LOGGER.error("Failed to process inbound message from queue {}; failed message: {}",
+                        lefe.getFailedMessage().getMessageProperties().getConsumerQueue(),
+                        lefe.getFailedMessage(), t);
             }
             return super.isFatal(t);
         }
