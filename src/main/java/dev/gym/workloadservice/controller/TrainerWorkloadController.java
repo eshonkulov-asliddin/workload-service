@@ -2,7 +2,7 @@ package dev.gym.workloadservice.controller;
 
 import dev.gym.workloadservice.controller.util.RestApiConst;
 import dev.gym.workloadservice.dto.TrainerReportDTO;
-import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
+import dev.gym.workloadservice.dto.TrainerWorkload;
 import dev.gym.workloadservice.service.TrainerWorkloadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class TrainerWorkloadController {
 
     @PostMapping(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
     @ResponseStatus(HttpStatus.CREATED)
-    public void processTrainingChange(@RequestBody @Validated TrainerWorkloadRequest trainerWorkloadRequest) {
-        trainerWorkloadService.processTrainingChange(trainerWorkloadRequest);
+    public void processTrainingChange(@RequestBody @Validated TrainerWorkload trainerWorkload) {
+        trainerWorkloadService.processTrainingChange(trainerWorkload);
     }
 
 }

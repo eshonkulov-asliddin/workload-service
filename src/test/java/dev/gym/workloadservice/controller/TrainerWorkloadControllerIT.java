@@ -2,7 +2,7 @@ package dev.gym.workloadservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gym.workloadservice.controller.util.RestApiConst;
-import dev.gym.workloadservice.dto.TrainerWorkloadRequest;
+import dev.gym.workloadservice.dto.TrainerWorkload;
 import dev.gym.workloadservice.model.ActionType;
 import dev.gym.workloadservice.security.jwt.JwtUtil;
 import org.junit.jupiter.api.Test;
@@ -57,12 +57,12 @@ class TrainerWorkloadControllerIT {
         jwtUtil.setExpirationTime(expirationTime);
         String token = jwtUtil.generateToken("testUser");
 
-        TrainerWorkloadRequest trainerWorkloadRequest = new TrainerWorkloadRequest("testUser", "testFirstname", "testLastName", true, LocalDate.now().plusDays(3), 1, ActionType.ADD);
+        TrainerWorkload trainerWorkload = new TrainerWorkload("testUser", "testFirstname", "testLastName", true, LocalDate.now().plusDays(3), 1, ActionType.ADD);
 
         mockMvc.perform(post(RestApiConst.TRAINER_WORKLOAD_API_ROOT_PATH)
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(trainerWorkloadRequest)))
+                .content(objectMapper.writeValueAsString(trainerWorkload)))
                 .andExpect(status().isCreated());
     }
 
