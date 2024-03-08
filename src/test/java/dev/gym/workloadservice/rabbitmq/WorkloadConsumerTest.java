@@ -1,7 +1,7 @@
 package dev.gym.workloadservice.rabbitmq;
 
 import dev.gym.workloadservice.dto.TrainerWorkload;
-import dev.gym.workloadservice.service.TrainerWorkloadService;
+import dev.gym.workloadservice.service.TrainersTrainingSummaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 class WorkloadConsumerTest {
 
     @Mock
-    private TrainerWorkloadService trainerWorkloadService;
+    private TrainersTrainingSummaryService trainersTrainingSummaryService;
     @InjectMocks
     private WorkloadConsumer workloadConsumer;
 
@@ -26,6 +26,6 @@ class WorkloadConsumerTest {
 
         workloadConsumer.receiveMessage(trainerWorkload);
 
-        verify(trainerWorkloadService, times(1)).processTrainingChange(trainerWorkload);
+        verify(trainersTrainingSummaryService, times(1)).processWorkload(trainerWorkload);
     }
 }

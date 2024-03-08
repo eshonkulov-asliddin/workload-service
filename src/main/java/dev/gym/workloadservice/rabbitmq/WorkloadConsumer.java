@@ -1,7 +1,7 @@
 package dev.gym.workloadservice.rabbitmq;
 
 import dev.gym.workloadservice.dto.TrainerWorkload;
-import dev.gym.workloadservice.service.TrainerWorkloadService;
+import dev.gym.workloadservice.service.TrainersTrainingSummaryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -17,12 +17,12 @@ public class WorkloadConsumer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(WorkloadConsumer.class);
     @Autowired
-    private TrainerWorkloadService trainerWorkloadService;
+    private TrainersTrainingSummaryService trainersTrainingSummaryService;
 
     @RabbitListener(queues = WORKLOAD_MESSAGES)
     public void receiveMessage(TrainerWorkload trainerWorkload) {
         LOGGER.info("Received < {} >", trainerWorkload);
-        trainerWorkloadService.processTrainingChange(trainerWorkload);
+        trainersTrainingSummaryService.processWorkload(trainerWorkload);
     }
 
 }
