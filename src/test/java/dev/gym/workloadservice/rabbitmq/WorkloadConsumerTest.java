@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,8 +25,8 @@ class WorkloadConsumerTest {
     @Test
     void whenReceiveMessage_thenProcessTrainingChange() {
         TrainerWorkload trainerWorkload = mock(TrainerWorkload.class);
-
-        workloadConsumer.receiveMessage(trainerWorkload);
+        String transactionId = UUID.randomUUID().toString();
+        workloadConsumer.receiveMessage(transactionId, trainerWorkload);
 
         verify(trainersTrainingSummaryService, times(1)).processWorkload(trainerWorkload);
     }
