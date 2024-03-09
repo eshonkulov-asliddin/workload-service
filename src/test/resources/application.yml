@@ -9,7 +9,6 @@ spring:
   data:
     mongodb:
       database: test
-      port: ${mongodb.container.port}
       host: localhost
       auto-index-creation: true
   profiles:
