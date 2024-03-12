@@ -6,6 +6,11 @@ jwt:
 
 
 spring:
+  data:
+    mongodb:
+      database: test
+      host: localhost
+      auto-index-creation: true
   profiles:
     active: test
   rabbitmq:
