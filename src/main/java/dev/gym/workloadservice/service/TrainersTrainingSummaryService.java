@@ -8,6 +8,8 @@ import dev.gym.workloadservice.model.MonthlySummary;
 import dev.gym.workloadservice.model.TrainersTrainingSummary;
 import dev.gym.workloadservice.model.YearlySummary;
 import dev.gym.workloadservice.repository.TrainersTrainingSummaryRepo;
+import dev.gym.workloadservice.service.exception.NotFoundException;
+import dev.gym.workloadservice.service.exception.util.ExceptionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class TrainersTrainingSummaryService {
 
     public Optional<TrainersTrainingSummaryDTO> getTrainingSummaryByUsername(String username) {
         Optional<TrainersTrainingSummary> trainersTrainingSummary = trainersTrainingSummaryRepo.findSummaryByTrainerUsername(username);
+        if (trainersTrainingSummary.isEmpty()) {
+            throw new NotFoundException(String.format(ExceptionConstants.TRAINER_NOT_FOUND, username));
+        }
         return trainersTrainingSummary.map(converter::convert);
     }
 
