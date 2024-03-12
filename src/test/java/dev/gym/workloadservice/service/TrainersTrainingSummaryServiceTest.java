@@ -7,7 +7,8 @@ import dev.gym.workloadservice.model.ActionType;
 import dev.gym.workloadservice.model.MonthlySummary;
 import dev.gym.workloadservice.model.TrainersTrainingSummary;
 import dev.gym.workloadservice.model.YearlySummary;
-import dev.gym.workloadservice.repository.TrainersTrainingSummaryRepo;
+import dev.gym.workloadservice.repository.TrainersTrainingSummaryRepo;import dev.gym.workloadservice.service.exception.NotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -69,9 +70,9 @@ class TrainersTrainingSummaryServiceTest {
     }
 
     @Test
-    void givenInvalidTrainerUsername_whenGetSummary_thenReturnEmpty() {
-        Optional<TrainersTrainingSummaryDTO> trainingSummaryByUsername = trainersTrainingSummaryService.getTrainingSummaryByUsername(USERNAME);
-        assertTrue(trainingSummaryByUsername.isEmpty());
+    void givenInvalidTrainerUsername_whenGetSummary_thenThrowNotFoundException() {
+        Assertions.assertThrows(NotFoundException.class,
+                () -> trainersTrainingSummaryService.getTrainingSummaryByUsername(USERNAME));
     }
 
     @Test
