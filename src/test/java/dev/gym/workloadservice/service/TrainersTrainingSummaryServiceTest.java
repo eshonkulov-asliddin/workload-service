@@ -7,7 +7,8 @@ import dev.gym.workloadservice.model.ActionType;
 import dev.gym.workloadservice.model.MonthlySummary;
 import dev.gym.workloadservice.model.TrainersTrainingSummary;
 import dev.gym.workloadservice.model.YearlySummary;
-import dev.gym.workloadservice.repository.TrainersTrainingSummaryRepo;import dev.gym.workloadservice.service.exception.NotFoundException;
+import dev.gym.workloadservice.repository.TrainersTrainingSummaryRepo;
+import dev.gym.workloadservice.service.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +25,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
