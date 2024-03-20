@@ -23,47 +23,43 @@ import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 @Scope(SCOPE_CUCUMBER_GLUE)
 public class TrainerWorkloadHttpClient {
 
-    private final String SERVER_URL;
-    private final JwtUtil jwtUtil;
-    private final RestTemplate restTemplate;
-    @LocalServerPort
-    private int port;
+    @Value("${serverUrl}")
+    private String serverUrl;
+
     @Value("${jwt.secret.key}")
     private String secret;
+
     @Value("${jwt.expiration.time}")
     private long expirationTime;
 
-    {
-        SERVER_URL =  "http://localhost";
-        jwtUtil = new JwtUtil();
-        restTemplate = new RestTemplate();
+    @LocalServerPort
+    private int port;
+
+    private final JwtUtil jwtUtil;
+    private final RestTemplate restTemplate;
+
+    public TrainerWorkloadHttpClient(JwtUtil jwtUtil, RestTemplate restTemplate) {
+        this.jwtUtil = jwtUtil;
+        this.restTemplate = restTemplate;
     }
 
-    public int processTrainingChangeAuthorized(final TrainerWorkload trainerWorkload) {
+    public int processTrainingChangeAuthorized(TrainerWorkload trainerWorkload) {
         String token = generateJwtToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
+        HttpHeaders headers = createAuthorizationHeaders(token);
         HttpEntity<TrainerWorkload> requestEntity = new HttpEntity<>(trainerWorkload, headers);
-        return restTemplate.exchange(getProcessTrainingChangeEndpoint(), HttpMethod.POST, requestEntity, Void.class).getStatusCode().value();
+        return executePostRequest(getProcessTrainingChangeEndpoint(), requestEntity);
     }
 
-    public int processTrainingChangeUnAuthorized(final TrainerWorkload trainerWorkload) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    public int processTrainingChangeUnAuthorized(TrainerWorkload trainerWorkload) {
+        HttpHeaders headers = createAuthorizationHeaders(null);
         HttpEntity<TrainerWorkload> requestEntity = new HttpEntity<>(trainerWorkload, headers);
-        try {
-            return restTemplate.exchange(getProcessTrainingChangeEndpoint(), HttpMethod.POST, requestEntity, Void.class).getStatusCode().value();
-        } catch (HttpClientErrorException e) {
-            return e.getStatusCode().value();
-        }
+        return executePostRequest(getProcessTrainingChangeEndpoint(), requestEntity);
     }
 
     public ResponseEntity<TrainersTrainingSummaryDTO> getMonthlyReportByTrainerUsernameAuthorized(String username) {
         String token = generateJwtToken();
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = createAuthorizationHeaders(token);
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        headers.setBearerAuth(token);
         String url = getMonthlyReportEndpoint() + "/" + username;
         return restTemplate.exchange(url, HttpMethod.GET, requestEntity, TrainersTrainingSummaryDTO.class);
     }
@@ -74,12 +70,29 @@ public class TrainerWorkloadHttpClient {
         return jwtUtil.generateToken(Utils.TRAINER_USERNAME);
     }
 
+    private HttpHeaders createAuthorizationHeaders(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (token != null) {
+            headers.setBearerAuth(token);
+        }
+        return headers;
+    }
+
+    private int executePostRequest(String url, HttpEntity<TrainerWorkload> requestEntity) {
+        try {
+            return restTemplate.exchange(url, HttpMethod.POST, requestEntity, Void.class).getStatusCode().value();
+        } catch (HttpClientErrorException e) {
+            return e.getStatusCode().value();
+        }
+    }
+
     private String getMonthlyReportEndpoint() {
-        return SERVER_URL + ":" + port + TRAINER_WORKLOAD_MONTHLY_REPORT_API_ROOT_PATH;
+        return serverUrl + ":" + port + TRAINER_WORKLOAD_MONTHLY_REPORT_API_ROOT_PATH;
     }
 
     private String getProcessTrainingChangeEndpoint() {
-        return SERVER_URL + ":" + port + TRAINER_WORKLOAD_API_ROOT_PATH;
+        return serverUrl + ":" + port + TRAINER_WORKLOAD_API_ROOT_PATH;
     }
 
 }
