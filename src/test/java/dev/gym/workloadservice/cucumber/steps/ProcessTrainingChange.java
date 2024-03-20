@@ -27,7 +27,7 @@ public class ProcessTrainingChange {
 
     @Given("a valid trainer workload request")
     public void a_valid_trainer_workload_request_authorized() {
-        trainerWorkload = new TrainerWorkload(TRAINER_USERNAME, TRAINER_FIRSTNAME, TRAINER_LASTNAME, IS_ACTIVE, TRAINING_DATE, TRAINING_DURATION, ACTION_TYPE); // valid TrainerWorkload
+        trainerWorkload = createValidTrainerWorkload();
     }
 
     @When("the authorized client sends the request to process the training change")
@@ -42,7 +42,7 @@ public class ProcessTrainingChange {
 
     @Given("a trainer workload request")
     public void valid_trainer_workload_request_un_authorized() {
-        trainerWorkload = new TrainerWorkload(TRAINER_USERNAME, TRAINER_FIRSTNAME, TRAINER_LASTNAME, IS_ACTIVE, TRAINING_DATE, TRAINING_DURATION, ACTION_TYPE); // valid TrainerWorkload
+        trainerWorkload = createValidTrainerWorkload();
     }
 
     @When("the unauthorized client sends the request to process the training change")
@@ -53,6 +53,10 @@ public class ProcessTrainingChange {
     @Then("the return should be 403")
     public void return_unauthorized() {
         assertEquals(403, processTrainingChangeStatusCodeUnAuthorized, "Error while processing training change");
+    }
+
+    private TrainerWorkload createValidTrainerWorkload() {
+        return new TrainerWorkload(TRAINER_USERNAME, TRAINER_FIRSTNAME, TRAINER_LASTNAME, IS_ACTIVE, TRAINING_DATE, TRAINING_DURATION, ACTION_TYPE); // valid TrainerWorkload
     }
 
 }
