@@ -19,3 +19,5 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+
+serverUrl: http://localhost
