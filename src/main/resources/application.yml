@@ -2,21 +2,12 @@ spring:
   application:
     name: workload-service
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
     listener:
       simple:
         default-requeue-rejected: false # don't requeue rejected messages
   data:
     mongodb:
-      uri: mongodb://localhost:9090
-      database: workload
       auto-index-creation: true
-
-server:
-  port: 8082
 
 jwt:
   secret:
